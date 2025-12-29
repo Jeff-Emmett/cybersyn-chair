@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# CAD temporary files
+*.bak
+*.tmp
+*.dwl
+*.dwl2
+~$*
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large binary files (use Git LFS for these)
+*.stl
+*.step
+*.stp
+*.iges
+*.igs
+*.3mf
+*.gcode
+
+# Keep empty directories
+!.gitkeep
