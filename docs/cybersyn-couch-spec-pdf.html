@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 22mm 18mm;
+    @bottom-center {
+      content: "Cybersyn Couch — Specification & Build Plan";
+      font-size: 8pt;
+      color: #888;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    @bottom-right {
+      content: counter(page);
+      font-size: 8pt;
+      color: #888;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+  }
+  @page :first {
+    margin-top: 0;
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+  }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    page-break-after: always;
+    background: linear-gradient(160deg, #1a1208 0%, #2d1b00 30%, #4a2800 60%, #2d1b00 100%);
+    margin: -20mm -18mm 0 -18mm;
+    padding: 40mm 30mm 30mm 30mm;
+    min-height: 257mm;
+    color: white;
+    position: relative;
+  }
+  .cover h1 {
+    font-size: 42pt;
+    color: #ff9329;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin: 0 0 4mm 0;
+    font-weight: 800;
+  }
+  .cover h2 {
+    font-size: 14pt;
+    color: #cc8040;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0 0 15mm 0;
+  }
+  .cover .hero-img {
+    width: 100%;
+    border-radius: 6px;
+    margin: 6mm 0;
+  }
+  .cover .tagline {
+    font-size: 11pt;
+    color: #cca060;
+    line-height: 1.7;
+    margin-top: 6mm;
+  }
+  .cover .meta {
+    margin-top: 20mm;
+    font-size: 9pt;
+    color: #886030;
+  }
+  .cover .meta strong { color: #cc8040; }
+
+  /* ── TOC ── */
+  .toc {
+    page-break-after: always;
+  }
+  .toc h2 {
+    font-size: 20pt;
+    color: #4a2800;
+    border-bottom: 3px solid #ff9329;
+    padding-bottom: 3mm;
+    margin-bottom: 8mm;
+  }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 2mm 0;
+    border-bottom: 1px dotted #ddd;
+    font-size: 11pt;
+  }
+  .toc-item .num { color: #ff9329; font-weight: bold; margin-right: 3mm; }
+  .toc-item .title { flex: 1; }
+  .toc-item .dots { flex: 1; border-bottom: 1px dotted #ccc; margin: 0 2mm; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 8mm; }
+  .section-break { page-break-before: always; }
+
+  h2 {
+    font-size: 18pt;
+    color: #4a2800;
+    border-bottom: 2.5px solid #ff9329;
+    padding-bottom: 2mm;
+    margin: 10mm 0 5mm 0;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #7a4400;
+    margin: 6mm 0 3mm 0;
+  }
+  h4 {
+    font-size: 10pt;
+    color: #996600;
+    margin: 4mm 0 2mm 0;
+  }
+
+  /* ── IMAGES ── */
+  .img-block {
+    margin: 5mm 0;
+    text-align: center;
+  }
+  .img-block img {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  .img-block.full img {
+    width: 100%;
+  }
+  .img-block.half img {
+    width: 48%;
+  }
+  .img-caption {
+    font-size: 8pt;
+    color: #888;
+    font-style: italic;
+    margin-top: 2mm;
+    text-align: center;
+  }
+
+  /* ── TABLES ── */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 3mm 0 5mm 0;
+    font-size: 9pt;
+  }
+  th {
+    background: #4a2800;
+    color: white;
+    text-align: left;
+    padding: 2.5mm 3mm;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 2mm 3mm;
+    border-bottom: 0.5px solid #ddd;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #faf6f0; }
+  tr:hover td { background: #fff5e8; }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    background: #fff8ef;
+    border-left: 4px solid #ff9329;
+    padding: 4mm 5mm;
+    margin: 4mm 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 9.5pt;
+  }
+  .callout strong { color: #7a4400; }
+  .callout-blue {
+    background: #f0f4ff;
+    border-left-color: #4488ff;
+  }
+  .callout-blue strong { color: #224488; }
+
+  /* ── CODE / PRE ── */
+  code {
+    background: #f5f0e8;
+    color: #6a3800;
+    padding: 0.5mm 2mm;
+    border-radius: 2px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 8.5pt;
+  }
+  pre {
+    background: #1a1208;
+    color: #ff9329;
+    padding: 4mm;
+    border-radius: 3px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 8pt;
+    line-height: 1.6;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    background: #ff9329;
+    color: white;
+    padding: 0.5mm 3mm;
+    border-radius: 8px;
+    font-size: 7.5pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  .badge-blue { background: #4488ff; }
+  .badge-green { background: #22aa44; }
+  .badge-red { background: #dd3333; }
+  .badge-purple { background: #8844cc; }
+
+  /* ── LISTS ── */
+  ul, ol { padding-left: 6mm; margin: 2mm 0; }
+  li { margin-bottom: 1.5mm; }
+
+  /* ── TWO COLUMN ── */
+  .two-col {
+    display: flex;
+    gap: 5mm;
+  }
+  .two-col > div { flex: 1; }
+
+  /* ── ASCII DIAGRAMS ── */
+  .ascii {
+    background: #1a1208;
+    color: #ffaa44;
+    padding: 4mm;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 7.5pt;
+    line-height: 1.4;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  /* ── PHASE TIMELINE ── */
+  .phase {
+    display: flex;
+    align-items: flex-start;
+    margin: 3mm 0;
+    page-break-inside: avoid;
+  }
+  .phase-num {
+    background: #ff9329;
+    color: white;
+    width: 8mm;
+    height: 8mm;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 9pt;
+    flex-shrink: 0;
+    margin-right: 4mm;
+    margin-top: 1mm;
+  }
+  .phase-content { flex: 1; }
+  .phase-content strong { color: #4a2800; }
+  .phase-content .duration { color: #888; font-size: 8pt; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     COVER PAGE
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <h1>Cybersyn Couch</h1>
+  <h2>Specification &amp; Build Plan</h2>
+  <img class="hero-img" src="/home/jeffe/Pictures/fal-generated/cybersyn-couch-hero.jpg" alt="Cybersyn Couch concept">
+  <div class="tagline">
+    A two-seater cybernetically controlled couch inspired by Chile's 1971 Cybersyn Operations Room.<br>
+    Dual independent joysticks &bull; Switchable control modes &bull; Shared dashboard<br>
+    10 Easter eggs &bull; MQTT/Home Assistant integration &bull; Open hardware
+  </div>
+  <div class="meta">
+    <strong>Version 0.1</strong> &mdash; March 2026<br>
+    Hardware: CERN-OHL-S-2.0 &nbsp;|&nbsp; Software: MIT &nbsp;|&nbsp; Docs: CC BY-SA 4.0
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TABLE OF CONTENTS
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="toc">
+  <h2>Contents</h2>
+  <div class="toc-item"><span class="num">1</span><span class="title">Design Philosophy &amp; Aesthetic</span></div>
+  <div class="toc-item"><span class="num">2</span><span class="title">Physical Specifications</span></div>
+  <div class="toc-item"><span class="num">3</span><span class="title">Dual Joystick System</span></div>
+  <div class="toc-item"><span class="num">4</span><span class="title">Center Console Dashboard</span></div>
+  <div class="toc-item"><span class="num">5</span><span class="title">Complete I/O Summary</span></div>
+  <div class="toc-item"><span class="num">6</span><span class="title">Electronics Architecture</span></div>
+  <div class="toc-item"><span class="num">7</span><span class="title">Software Architecture</span></div>
+  <div class="toc-item"><span class="num">8</span><span class="title">Easter Egg System</span></div>
+  <div class="toc-item"><span class="num">9</span><span class="title">Bill of Materials &amp; Cost</span></div>
+  <div class="toc-item"><span class="num">10</span><span class="title">Build Phases</span></div>
+  <div class="toc-item"><span class="num">11</span><span class="title">Manufacturing</span></div>
+  <div class="toc-item"><span class="num">12</span><span class="title">Safety &amp; Power</span></div>
+  <div class="toc-item"><span class="num">A</span><span class="title">Appendix: MQTT Topics &amp; Config</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     1. DESIGN PHILOSOPHY
+     ═══════════════════════════════════════════════════════════════════ -->
+<h2>1. Design Philosophy &amp; Aesthetic</h2>
+
+<table>
+  <tr><th>Principle</th><th>Description</th></tr>
+  <tr><td><strong>Dual Sovereignty</strong></td><td>Each occupant has full, independent control of their joystick side</td></tr>
+  <tr><td><strong>Democratic Switching</strong></td><td>Either person can propose a control swap; both must confirm (or one can override)</td></tr>
+  <tr><td><strong>Cybernetic Feedback</strong></td><td>Every action produces multimodal feedback: visual (LEDs), auditory (tones), haptic (vibration)</td></tr>
+  <tr><td><strong>No Dead Controls</strong></td><td>Every button does <em>something</em> &mdash; even if it's a hidden easter egg</td></tr>
+  <tr><td><strong>Accessible by Default</strong></td><td>Large buttons, intuitive joystick, no keyboard needed (honoring the original Cybersyn ethos)</td></tr>
+  <tr><td><strong>Modular &amp; Hackable</strong></td><td>All modules hot-swappable, all protocols open, all firmware flashable</td></tr>
+</table>
+
+<h3>Aesthetic Language</h3>
+<div class="two-col">
+  <div>
+    <ul>
+      <li><strong>Shell:</strong> White or off-white fiberglass, smooth compound curves</li>
+      <li><strong>Upholstery:</strong> Burnt orange (Pantone 1665 C)</li>
+      <li><strong>Controls:</strong> Backlit amber buttons, dark bezels</li>
+    </ul>
+  </div>
+  <div>
+    <ul>
+      <li><strong>Displays:</strong> Green-on-black OLED (retro terminal)</li>
+      <li><strong>Joysticks:</strong> Matte black aluminum, orange silicone grip</li>
+      <li><strong>Accent Lighting:</strong> Addressable RGB, default warm amber</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     2. PHYSICAL SPECIFICATIONS
+     ═══════════════════════════════════════════════════════════════════ -->
+<h2>2. Physical Specifications</h2>
+
+<div class="img-block full">
+  <img src="/home/jeffe/Pictures/fal-generated/cybersyn-couch-topview-layout.jpg" alt="Top-down control layout">
+  <div class="img-caption">Fig 2.1 &mdash; Top-down view: joystick + 4 function buttons per armrest, center dashboard between seats</div>
+</div>
+
+<table>
+  <tr><th>Dimension</th><th>Measurement</th><th>Notes</th></tr>
+  <tr><td>Overall width</td><td>1800 mm (71")</td><td>Includes armrests</td></tr>
+  <tr><td>Seating width</td><td>1400 mm (55")</td><td>Two adults comfortably</td></tr>
+  <tr><td>Seat depth</td><td>500 mm (20")</td><td>Standard loveseat</td></tr>
+  <tr><td>Seat height</td><td>420 mm (16.5")</td><td>Floor to seat surface</td></tr>
+  <tr><td>Backrest height</td><td>850 mm (33.5")</td><td>Floor to top</td></tr>
+  <tr><td>Armrest height</td><td>620 mm (24.4")</td><td>Floor to armrest top</td></tr>
+  <tr><td>Armrest width</td><td>200 mm (7.9")</td><td>Joystick + buttons</td></tr>
+  <tr><td>Armrest depth</td><td>450 mm (17.7")</td><td>Front to backrest</td></tr>
+  <tr><td>Center console</td><td>250 mm (9.8")</td><td>Dashboard panel</td></tr>
+  <tr><td>Base diameter</td><td>700 mm (27.5")</td><td>Pedestal footprint</td></tr>
+  <tr><td>Target weight</td><td>45&ndash;55 kg</td><td>Including all electronics</td></tr>
+</table>
+
+<h3>Shell Construction</h3>
+<p>Single fiberglass monocoque with five integrated zones: backrest, left armrest, left seat, right seat, right armrest. The center console is a raised section between the two seat zones.</p>
+
+<div class="callout">
+  <strong>Armrest cavities</strong> (each): Joystick mount (100&times;100&times;80mm), button panel recess (150&times;120&times;15mm), electronics bay (200&times;150&times;60mm, accessed from underside), cable channel to center console &amp; base.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     3. DUAL JOYSTICK SYSTEM
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>3. Dual Joystick System</h2>
+
+<div class="img-block full">
+  <img src="/home/jeffe/Pictures/fal-generated/cybersyn-armrest-detail.jpg" alt="Armrest joystick detail">
+  <div class="img-caption">Fig 3.1 &mdash; Armrest detail: Hall-effect 2-axis joystick with push button, 4&times; Cherry MX function buttons, RGB LED indicator strip</div>
+</div>
+
+<h3>Joystick Hardware</h3>
+<table>
+  <tr><th>Spec</th><th>Value</th></tr>
+  <tr><td>Type</td><td>Hall-effect 2-axis analog + push button</td></tr>
+  <tr><td>Travel</td><td>&plusmn;25&deg; from center, spring-return</td></tr>
+  <tr><td>Shaft</td><td>120mm tall, 12mm dia, anodized aluminum</td></tr>
+  <tr><td>Grip</td><td>35mm diameter knob, orange silicone overmold</td></tr>
+  <tr><td>Output</td><td>2&times; analog (0&ndash;3.3V per axis), 1&times; digital push</td></tr>
+  <tr><td>ADC</td><td>ADS1115 16-bit I2C &mdash; 4 channels (2 per joystick)</td></tr>
+  <tr><td>Mounting</td><td>M4 bolt pattern, 60mm square, drop-in from above</td></tr>
+</table>
+
+<h3>5 Control Modes</h3>
+<table>
+  <tr><th>Mode</th><th>Left Joystick</th><th>Right Joystick</th><th>LED Color</th></tr>
+  <tr><td><span class="badge">1 &mdash; INDEPENDENT</span></td><td>Controls LEFT side</td><td>Controls RIGHT side</td><td style="color:#cc8800;font-weight:bold">Amber</td></tr>
+  <tr><td><span class="badge badge-blue">2 &mdash; SWAPPED</span></td><td>Controls RIGHT side</td><td>Controls LEFT side</td><td style="color:#2266cc;font-weight:bold">Blue</td></tr>
+  <tr><td><span class="badge badge-green">3 &mdash; MERGED</span></td><td>X axis (pan)</td><td>Y axis (tilt)</td><td style="color:#22aa44;font-weight:bold">Green</td></tr>
+  <tr><td><span class="badge badge-red">4 &mdash; PILOT/CO-PILOT</span></td><td>FULL control</td><td>Override only (&gt;80%)</td><td style="color:#cc2222;font-weight:bold">Red/Green</td></tr>
+  <tr><td><span class="badge badge-purple">5 &mdash; CUSTOM</span></td><td>User-defined</td><td>User-defined</td><td style="color:#7733bb;font-weight:bold">Purple</td></tr>
+</table>
+
+<h3>Joystick Application Mappings</h3>
+<p>The joystick outputs are abstract &mdash; what they <em>do</em> depends on the active application, selected via the MODE rotary encoder:</p>
+<table>
+  <tr><th>Application</th><th>X-Axis</th><th>Y-Axis</th><th>Push Button</th></tr>
+  <tr><td>Lighting</td><td>Color temperature (warm&harr;cool)</td><td>Brightness (dim&harr;bright)</td><td>Toggle zone on/off</td></tr>
+  <tr><td>Music</td><td>Track skip (prev/next)</td><td>Volume (down/up)</td><td>Play/Pause</td></tr>
+  <tr><td>Display Navigation</td><td>Scroll horizontal</td><td>Scroll vertical</td><td>Select/Enter</td></tr>
+  <tr><td>Motorized (future)</td><td>Seat recline angle</td><td>Footrest extension</td><td>Lock position</td></tr>
+  <tr><td>Fun Mode</td><td>Spaceship steering</td><td>Throttle</td><td>Fire lasers (LED effect)</td></tr>
+  <tr><td>Camera/Projector</td><td>Pan</td><td>Tilt</td><td>Shutter/toggle</td></tr>
+</table>
+
+<h3>Swap Mechanism</h3>
+<div class="callout">
+  <strong>SWAP button</strong> (center dashboard):<br>
+  &bull; <strong>Single press:</strong> Initiates swap request &mdash; LED blinks on both armrests<br>
+  &bull; <strong>Second person confirms</strong> within 3 seconds: Swap executes<br>
+  &bull; <strong>Timeout (no confirm):</strong> Swap cancelled, brief buzz feedback<br>
+  &bull; <strong>Double-press by same person:</strong> Force-swap (for solo use)<br>
+  &bull; <strong>Hold 3 seconds:</strong> Cycle to next mode (Independent &rarr; Swapped &rarr; Merged &rarr; Pilot &rarr; Custom)
+</div>
+
+<pre>
+              ┌─────────┐
+              │  IDLE   │ ← default after boot
+              └────┬────┘
+              SWAP pressed
+              by person A
+              ┌────▼────┐
+              │PENDING  │ ← LED blinks, OLED: "Swap? Confirm!"
+              │ 3s timer│
+              └────┬────┘
+       ┌───────────┼───────────┐
+  Person B     Timeout      Person A
+  confirms     (3 sec)      double-press
+  ┌────▼────┐ ┌───▼────┐ ┌──▼───────┐
+  │CONFIRMED│ │CANCEL  │ │FORCE SWAP│
+  │ Execute │ │ Return │ │ Execute  │
+  └────┬────┘ └───┬────┘ └──┬───────┘
+       └───────────┴─────────┘
+              ┌────▼────┐
+              │  IDLE   │ ← new mode active
+              └─────────┘
+</pre>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     4. CENTER CONSOLE DASHBOARD
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>4. Center Console Dashboard</h2>
+
+<div class="img-block full">
+  <img src="/home/jeffe/Pictures/fal-generated/cybersyn-dashboard-detail.jpg" alt="Center dashboard">
+  <div class="img-caption">Fig 4.1 &mdash; Center console: OLED status display, primary function buttons, SWAP control, NFC reader, mode rotary encoder, easter egg row</div>
+</div>
+
+<h3>Dashboard Layout (250mm &times; 180mm surface)</h3>
+
+<pre>
+┌────────────────────────────────────────────────┐
+│              CENTER DASHBOARD PANEL             │
+├────────────────────────────────────────────────┤
+│  ┌──────────────────────────────────────────┐  │
+│  │        1.3" OLED STATUS DISPLAY          │  │
+│  │  MODE: Independent        [PWR] 98%      │  │
+│  │  L: Lighting   R: Music                  │  │
+│  │  * Track: Solar Sailer -- Daft Punk      │  │
+│  └──────────────────────────────────────────┘  │
+│                                                │
+│  ROW 1 -- PRIMARY FUNCTIONS                    │
+│  [LIGHTS] [VOLUME] [MUSIC] [POWER]            │
+│                                                │
+│  ROW 2 — SYSTEM CONTROLS                       │
+│  [⇄ SWAP L↔R]   [◉ NFC]   [MODE ROTARY]      │
+│                                                │
+│  ROW 3 — EASTER EGGS                           │
+│  [?! RANDOM] [☆ PARTY] [♫ AMBIENT] [◈ SECRET] │
+└────────────────────────────────────────────────┘
+</pre>
+
+<h3>Dashboard Controls</h3>
+<table>
+  <tr><th>Row</th><th>Controls</th><th>Function</th></tr>
+  <tr><td>Display</td><td>1.3" SH1106 OLED (128&times;64, green-on-black)</td><td>Mode, status, track info, zone states</td></tr>
+  <tr><td>Row 1: Primary</td><td>LIGHTS &bull; VOLUME &bull; MUSIC &bull; POWER MODE</td><td>Master lighting toggle, rotary volume, music play/pause, system power mode cycle</td></tr>
+  <tr><td>Row 2: System</td><td>SWAP L&harr;R &bull; NFC Reader &bull; MODE SELECT</td><td>Joystick swap handshake, user profile loading, rotary app selector</td></tr>
+  <tr><td>Row 3: Easter Eggs</td><td>RANDOM &bull; PARTY &bull; AMBIENT &bull; SECRET</td><td>Random Stafford Beer quote, party mode, ambient sound cycle, Konami code start</td></tr>
+</table>
+
+<h3>Per-Armrest Buttons (&times;2, mirrored layout)</h3>
+
+<pre>
+┌──────────────────────────────┐
+│     ARMREST SURFACE          │
+│  ┌──────────────────────┐    │
+│  │     ◎ JOYSTICK       │    │
+│  │   (2-axis + push)    │    │
+│  └──────────────────────┘    │
+│  ┌─────┐ ┌─────┐            │
+│  │ FN1 │ │ FN2 │  Function  │
+│  └─────┘ └─────┘  buttons   │
+│  ┌─────┐ ┌─────┐  (user-    │
+│  │ FN3 │ │ FN4 │  mappable) │
+│  └─────┘ └─────┘            │
+│  [═══ INDICATOR LED BAR ═══] │
+└──────────────────────────────┘
+</pre>
+
+<table>
+  <tr><th>Button</th><th>Default Mapping</th><th>Type</th></tr>
+  <tr><td>FN1</td><td>Zone light toggle (own side)</td><td>Cherry MX Blue, 20mm cap, RGB LED</td></tr>
+  <tr><td>FN2</td><td>Lighting scene cycle</td><td>Cherry MX Blue, 20mm cap, RGB LED</td></tr>
+  <tr><td>FN3</td><td>Playlist cycle</td><td>Cherry MX Blue, 20mm cap, RGB LED</td></tr>
+  <tr><td>FN4</td><td>Random easter egg (both FN4 simultaneously = Algedonic Alert!)</td><td>Cherry MX Blue, 20mm cap, RGB LED</td></tr>
+</table>
+
+<h3>Button Specifications</h3>
+<table>
+  <tr><th>Button</th><th>Type</th><th>Size</th><th>Illumination</th><th>Feedback</th></tr>
+  <tr><td>Joystick push</td><td>Integrated switch</td><td>N/A</td><td>Shaft ring LED</td><td>Click + haptic</td></tr>
+  <tr><td>FN1&ndash;FN4 (&times;8)</td><td>Cherry MX Blue</td><td>20&times;20mm cap</td><td>Individual RGB LED</td><td>Audible click + haptic</td></tr>
+  <tr><td>LIGHTS / MUSIC / POWER</td><td>Silicone dome, backlit</td><td>30&times;30mm</td><td>Amber / Green / Red LED</td><td>Haptic pulse</td></tr>
+  <tr><td>VOLUME / MODE</td><td>Rotary encoder + push</td><td>20&ndash;25mm knob</td><td>Ring / OLED update</td><td>Detented rotation</td></tr>
+  <tr><td>SWAP</td><td>Large mechanical, guarded</td><td>40&times;25mm</td><td>Bicolor Red/Green LED</td><td>Heavy click + dual haptic</td></tr>
+  <tr><td>NFC Reader</td><td>Flush-mount circular</td><td>30mm dia</td><td>Blue ring LED</td><td>Tone on read</td></tr>
+  <tr><td>Easter egg row (&times;4)</td><td>Cherry MX, novelty caps</td><td>20&times;20mm</td><td>RGB programmable</td><td>Surprise!</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     5. COMPLETE I/O SUMMARY
+     ═══════════════════════════════════════════════════════════════════ -->
+<h2>5. Complete I/O Summary</h2>
+
+<table>
+  <tr><th>Category</th><th>Count</th><th>Type</th><th>Location</th></tr>
+  <tr><td>Joystick analog axes</td><td>4</td><td>Analog input (0&ndash;3.3V)</td><td>2 per armrest</td></tr>
+  <tr><td>Joystick push buttons</td><td>2</td><td>Digital input</td><td>1 per armrest</td></tr>
+  <tr><td>Function buttons</td><td>8 (4&times;2)</td><td>Digital input</td><td>4 per armrest</td></tr>
+  <tr><td>Dashboard buttons</td><td>8</td><td>Digital input</td><td>Center console</td></tr>
+  <tr><td>Rotary encoders</td><td>2</td><td>Quadrature + push</td><td>Center (volume + mode)</td></tr>
+  <tr><td>NFC reader</td><td>1</td><td>SPI</td><td>Center console</td></tr>
+  <tr><td>OLED displays</td><td>1&ndash;3</td><td>I2C (SH1106)</td><td>Center + optional per arm</td></tr>
+  <tr><td>RGB LED strips</td><td>~125 LEDs, 4 zones</td><td>WS2812B data line</td><td>Arms, base, backrest</td></tr>
+  <tr><td>Haptic motors</td><td>3</td><td>PWM via DRV2605L</td><td>L arm, R arm, center</td></tr>
+  <tr><td>Speakers</td><td>2 (stereo)</td><td>I2S or USB audio</td><td>Shell-mounted</td></tr>
+  <tr><td><strong>Total GPIO-level signals</strong></td><td colspan="3"><strong>~35&ndash;40 mixed analog/digital</strong></td></tr>
+</table>
+
+<h3>LED Channel Map</h3>
+<table>
+  <tr><th>Index Range</th><th>Zone</th><th>Location</th><th>Default Color</th></tr>
+  <tr><td>0&ndash;29</td><td>Left Arm</td><td>Under left armrest lip</td><td>Warm amber</td></tr>
+  <tr><td>30&ndash;59</td><td>Right Arm</td><td>Under right armrest lip</td><td>Warm amber</td></tr>
+  <tr><td>60&ndash;104</td><td>Base</td><td>Pedestal circumference</td><td>Deep orange</td></tr>
+  <tr><td>105&ndash;124</td><td>Backrest</td><td>Behind/under top edge</td><td>Soft orange</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     6. ELECTRONICS ARCHITECTURE
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>6. Electronics Architecture</h2>
+
+<div class="img-block full">
+  <img src="/home/jeffe/Pictures/fal-generated/cybersyn-electronics-exploded.jpg" alt="Electronics exploded view">
+  <div class="img-caption">Fig 6.1 &mdash; Electronics overview: Raspberry Pi 4B brain, ADS1115 ADC, MCP23017 expanders, OLEDs, joysticks, Cherry MX PCB, haptic motors, NFC, speakers, LED strips</div>
+</div>
+
+<h3>Core Components</h3>
+<table>
+  <tr><th>Component</th><th>Part</th><th>Bus</th><th>Role</th></tr>
+  <tr><td>Brain</td><td>Raspberry Pi 4B / 5</td><td>Host</td><td>WiFi/BT, I2C/SPI master, audio out</td></tr>
+  <tr><td>ADC</td><td>ADS1115 (0x48)</td><td>I2C</td><td>4-ch 16-bit for joystick analog axes</td></tr>
+  <tr><td>I/O Expander #1</td><td>MCP23017 (0x20)</td><td>I2C</td><td>Left arm buttons + LEDs (16 GPIO)</td></tr>
+  <tr><td>I/O Expander #2</td><td>MCP23017 (0x21)</td><td>I2C</td><td>Right arm + center dashboard (16 GPIO)</td></tr>
+  <tr><td>I2C Multiplexer</td><td>TCA9548A (0x70)</td><td>I2C</td><td>Routes duplicate-address haptic drivers</td></tr>
+  <tr><td>Haptic &times;3</td><td>DRV2605L + LRA motors</td><td>I2C (muxed)</td><td>Per-zone vibration feedback</td></tr>
+  <tr><td>Display(s)</td><td>SH1106 OLED 128&times;64</td><td>I2C</td><td>Status (center + optional per arm)</td></tr>
+  <tr><td>NFC Reader</td><td>RC522 / MFRC522</td><td>SPI</td><td>User identification / profile loading</td></tr>
+  <tr><td>LEDs</td><td>WS2812B strips (~125 LEDs)</td><td>GPIO data</td><td>4 zones: arms, base, backrest</td></tr>
+  <tr><td>Audio</td><td>USB DAC + 2&times; 5W speakers</td><td>USB</td><td>Music, SFX, ambient sounds</td></tr>
+</table>
+
+<h3>I2C Address Map</h3>
+<table>
+  <tr><th>Address</th><th>Device</th><th>Location</th></tr>
+  <tr><td><code>0x20</code></td><td>MCP23017 #1</td><td>Left armrest buttons &amp; LEDs</td></tr>
+  <tr><td><code>0x21</code></td><td>MCP23017 #2</td><td>Right armrest + center dashboard</td></tr>
+  <tr><td><code>0x3C</code></td><td>SH1106 OLED #1</td><td>Center dashboard display</td></tr>
+  <tr><td><code>0x3D</code></td><td>SH1106 OLED #2 (opt)</td><td>Left armrest mini display</td></tr>
+  <tr><td><code>0x3E</code></td><td>SH1106 OLED #3 (opt)</td><td>Right armrest mini display</td></tr>
+  <tr><td><code>0x48</code></td><td>ADS1115 ADC</td><td>Joystick analog inputs</td></tr>
+  <tr><td><code>0x5A&ndash;5C</code></td><td>DRV2605L &times;3 (via mux)</td><td>Haptic motors</td></tr>
+  <tr><td><code>0x70</code></td><td>TCA9548A</td><td>I2C multiplexer</td></tr>
+</table>
+
+<h3>Wiring Topology</h3>
+<pre>
+                      PEDESTAL BASE
+                ┌──────────────────────┐
+                │  • Pi 4B/5           │
+                │  • Power supply      │
+                │  • USB audio DAC     │
+                │  • Main PCB junction │
+                └──────────┬───────────┘
+                           │
+                 ┌─────────┼─────────┐
+                 │         │         │
+          ┌──────┴──┐ ┌───┴───┐ ┌───┴──────┐
+          │ LEFT ARM│ │CENTER │ │RIGHT ARM │
+          │ 8-wire  │ │12-wire│ │ 8-wire   │
+          │ ribbon  │ │ribbon │ │ ribbon   │
+          │         │ │       │ │          │
+          │• MCP I2C│ │• OLED │ │• MCP I2C │
+          │• ADC 0,1│ │• NFC  │ │• ADC 2,3 │
+          │• Haptic │ │• Encs │ │• Haptic  │
+          │• LEDs   │ │• Btns │ │• LEDs    │
+          └─────────┘ └───────┘ └──────────┘
+</pre>
+<p>Connectors: <strong>JST-XH</strong> for signals, <strong>XT30</strong> for power. All cables in molded shell channels.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     7. SOFTWARE ARCHITECTURE
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>7. Software Architecture</h2>
+
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│                  APPLICATION LAYER                       │
+│  ┌─────────────┐ ┌──────────────┐ ┌─────────────────┐  │
+│  │ Lighting    │ │ Music        │ │ Easter Egg      │  │
+│  │ Controller  │ │ Player       │ │ Engine          │  │
+│  │ (per-zone)  │ │ (MPD/Mopidy)│ │                 │  │
+│  └──────┬──────┘ └──────┬───────┘ └───────┬─────────┘  │
+│  ┌──────┴───────────────┴─────────────────┴──────────┐  │
+│  │           EVENT BUS (asyncio + MQTT)               │  │
+│  └──────┬────────────────────────────────────────────┘  │
+│  ┌──────┴────────────────────────────────────────────┐  │
+│  │           CONTROL ROUTING ENGINE                   │  │
+│  │  • Reads current mode (Independent/Swapped/etc.)  │  │
+│  │  • Maps joystick axes → target function           │  │
+│  │  • Manages swap handshake state machine           │  │
+│  │  • Deadzone, axis curves, rate limiting           │  │
+│  └──────┬────────────────────────────────────────────┘  │
+│  ┌──────┴────────────────────────────────────────────┐  │
+│  │           HARDWARE ABSTRACTION LAYER               │  │
+│  │  Joystick│Buttons│Display│Audio│LED│Haptic│NFC    │  │
+│  │  ADS1115 │MCP23017│SH1106│ALSA│WS28│DRV26│RC522  │  │
+│  └───────────────────────────────────────────────────┘  │
+│  OS: Raspberry Pi OS Lite (64-bit) or DietPi            │
+│  Runtime: Python 3.11+ / asyncio                        │
+│  Config: YAML at /etc/cybersyn/couch.yaml               │
+└─────────────────────────────────────────────────────────┘
+</pre>
+
+<h3>MQTT Topic Reference</h3>
+<table>
+  <tr><th>Topic Pattern</th><th>Payload Example</th><th>Dir</th></tr>
+  <tr><td><code>cybersyn/couch/{id}/joystick/{side}/axis</code></td><td><code>{"x": 0.42, "y": -0.15}</code></td><td>Out</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/button/{loc}/{name}</code></td><td><code>{"state": "pressed", "duration_ms": 120}</code></td><td>Out</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/mode</code></td><td><code>{"mode": "independent", "left_app": "lighting"}</code></td><td>Out</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/swap</code></td><td><code>{"state": "pending|confirmed|cancelled"}</code></td><td>Out</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/nfc</code></td><td><code>{"uid": "04:A2:...", "user": "operator_1"}</code></td><td>Out</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/led/{zone}/set</code></td><td><code>{"color": [255,100,0], "effect": "steady"}</code></td><td>In</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/audio/command</code></td><td><code>{"action": "play", "value": 50}</code></td><td>In</td></tr>
+  <tr><td><code>cybersyn/couch/{id}/easter_egg/trigger</code></td><td><code>{"name": "party_mode"}</code></td><td>In/Out</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     8. EASTER EGG SYSTEM
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>8. Easter Egg System</h2>
+
+<div class="img-block full">
+  <img src="/home/jeffe/Pictures/fal-generated/cybersyn-couch-lifestyle.jpg" alt="Cybersyn Couch lifestyle">
+  <div class="img-caption">Fig 8.1 &mdash; Two operators, each with independent joystick control, warm amber LEDs &mdash; a retro-futuristic command center</div>
+</div>
+
+<h3>10 Built-In Easter Eggs</h3>
+<table>
+  <tr><th>#</th><th>Name</th><th>Trigger</th><th>Effect</th><th>Duration</th></tr>
+  <tr><td>1</td><td><strong>Party Mode</strong></td><td>PARTY button</td><td>Rainbow LED chase, upbeat music, haptic bass sync</td><td>Until cancelled</td></tr>
+  <tr><td>2</td><td><strong>Deep Space</strong></td><td>Hold both joystick buttons 3s</td><td>Deep blue LEDs, spacecraft ambience, star-twinkle</td><td>Until cancelled</td></tr>
+  <tr><td>3</td><td><strong>Konami Code</strong></td><td>SECRET &rarr; &uarr;&uarr;&darr;&darr;&larr;&rarr;&larr;&rarr; + both FN1s</td><td>Flash all LEDs, "achievement unlocked", hidden features</td><td>5 sec</td></tr>
+  <tr><td>4</td><td><strong>Cybersyn Boot</strong></td><td>Power on</td><td>Retro CRT boot on OLEDs, ascending tone, LED sweep</td><td>8 sec</td></tr>
+  <tr><td>5</td><td><strong>Random Wisdom</strong></td><td>RANDOM button</td><td>Stafford Beer quote on OLED, spoken via TTS</td><td>10 sec</td></tr>
+  <tr><td>6</td><td><strong>Mood Sync</strong></td><td>Paired NFC cards tapped simultaneously</td><td>LEDs pulse in sync between occupants</td><td>30 sec</td></tr>
+  <tr><td>7</td><td><strong>Secret DJ</strong></td><td>MODE encoder 10 full turns clockwise</td><td>DJ mode: X=crossfade, Y=filter, buttons=sample pads</td><td>Until mode change</td></tr>
+  <tr><td>8</td><td><strong>Algedonic Alert</strong></td><td>Both FN4 buttons simultaneously</td><td>All LEDs red, alarm, "ALGEDONIC ALERT" on OLED</td><td>5 sec</td></tr>
+  <tr><td>9</td><td><strong>Chilean Flag</strong></td><td>Hold LIGHTS+MUSIC+POWER together</td><td>Red, white, blue wave pattern on all LEDs</td><td>10 sec</td></tr>
+  <tr><td>10</td><td><strong>Ghost in the Machine</strong></td><td>Unoccupied for 30 minutes</td><td>Slow LED breathing, random ambient sounds at low volume</td><td>Until detected</td></tr>
+</table>
+
+<div class="callout-blue callout">
+  <strong>User-Programmable:</strong> Custom easter eggs definable via YAML config &mdash; specify button sequences, timing windows, LED patterns, audio files, haptic responses, and display text.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     9. BILL OF MATERIALS & COST
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>9. Bill of Materials &amp; Cost</h2>
+
+<h3>Electronics BOM</h3>
+<table>
+  <tr><th>Item</th><th>Part</th><th>Qty</th><th>Unit</th><th>Total</th></tr>
+  <tr><td>Main computer</td><td>Raspberry Pi 4B 4GB</td><td>1</td><td>$55</td><td>$55</td></tr>
+  <tr><td>ADC</td><td>ADS1115 16-bit I2C</td><td>1</td><td>$12</td><td>$12</td></tr>
+  <tr><td>I/O Expanders</td><td>MCP23017</td><td>2</td><td>$4</td><td>$8</td></tr>
+  <tr><td>I2C Mux</td><td>TCA9548A</td><td>1</td><td>$6</td><td>$6</td></tr>
+  <tr><td>Joysticks</td><td>Hall-effect 2-axis industrial</td><td>2</td><td>$25</td><td>$50</td></tr>
+  <tr><td>OLED Displays</td><td>1.3" SH1106 I2C</td><td>1&ndash;3</td><td>$8</td><td>$8&ndash;24</td></tr>
+  <tr><td>NFC Reader</td><td>RC522</td><td>1</td><td>$5</td><td>$5</td></tr>
+  <tr><td>Haptic Drivers</td><td>DRV2605L breakout</td><td>3</td><td>$8</td><td>$24</td></tr>
+  <tr><td>LRA Motors</td><td>10mm coin vibration</td><td>3</td><td>$2</td><td>$6</td></tr>
+  <tr><td>Mech Switches</td><td>Cherry MX Blue</td><td>12</td><td>$1</td><td>$12</td></tr>
+  <tr><td>Keycaps</td><td>Custom dye-sub PBT</td><td>12</td><td>$3</td><td>$36</td></tr>
+  <tr><td>Silicone Domes</td><td>Backlit 30mm</td><td>4</td><td>$5</td><td>$20</td></tr>
+  <tr><td>Rotary Encoders</td><td>EC11 + knobs</td><td>2</td><td>$4</td><td>$8</td></tr>
+  <tr><td>LED Strip</td><td>WS2812B 60/m</td><td>3m</td><td>$8/m</td><td>$24</td></tr>
+  <tr><td>USB Audio DAC</td><td>PCM2704</td><td>1</td><td>$15</td><td>$15</td></tr>
+  <tr><td>Speakers</td><td>2" full range 5W</td><td>2</td><td>$8</td><td>$16</td></tr>
+  <tr><td>Power Supply</td><td>USB-C PD 45W</td><td>1</td><td>$20</td><td>$20</td></tr>
+  <tr><td>Buck Converter</td><td>12V&rarr;5V 5A</td><td>1</td><td>$8</td><td>$8</td></tr>
+  <tr><td>Custom PCB</td><td>Main distribution board</td><td>1</td><td>$15</td><td>$15</td></tr>
+  <tr><td>Connectors &amp; wire</td><td>JST-XH, ribbon, 22AWG</td><td>lot</td><td>&mdash;</td><td>$25</td></tr>
+  <tr><td>Misc hardware</td><td>Standoffs, screws, heat shrink</td><td>lot</td><td>&mdash;</td><td>$15</td></tr>
+  <tr><td colspan="4" style="text-align:right"><strong>Electronics Subtotal</strong></td><td><strong>$398&ndash;414</strong></td></tr>
+</table>
+
+<h3>Structural BOM</h3>
+<table>
+  <tr><th>Item</th><th>Qty</th><th>Cost</th></tr>
+  <tr><td>Fiberglass cloth (6oz E-glass, 10 yd)</td><td>1</td><td>$60</td></tr>
+  <tr><td>Epoxy resin (2-part laminating, 2 gal)</td><td>1</td><td>$80</td></tr>
+  <tr><td>Gel coat (white, 1 gal)</td><td>1</td><td>$45</td></tr>
+  <tr><td>XPS foam board 1" (plug)</td><td>4 sheets</td><td>$120</td></tr>
+  <tr><td>Steel tube 4" dia, 18"</td><td>1</td><td>$40</td></tr>
+  <tr><td>Steel base plate 1/4", 27" dia</td><td>1</td><td>$80</td></tr>
+  <tr><td>Heavy-duty lazy susan bearing 12"</td><td>1</td><td>$35</td></tr>
+  <tr><td>High-density upholstery foam 2"</td><td>2 yd</td><td>$60</td></tr>
+  <tr><td>Burnt orange Ultrasuede fabric</td><td>3 yd</td><td>$120</td></tr>
+  <tr><td>Sanding supplies, Bondo, primer, adhesive</td><td>lot</td><td>$90</td></tr>
+  <tr><td colspan="2" style="text-align:right"><strong>Structural Subtotal</strong></td><td><strong>$730</strong></td></tr>
+</table>
+
+<h3>Total Cost Summary</h3>
+<table>
+  <tr><th>Category</th><th>Cost</th></tr>
+  <tr><td>Electronics</td><td>$400&ndash;415</td></tr>
+  <tr><td>Structural / materials</td><td>$730</td></tr>
+  <tr><td>3D printed parts</td><td>$40&ndash;60</td></tr>
+  <tr><td>Contingency (15%)</td><td>$175</td></tr>
+  <tr style="background:#fff5e8"><td><strong>Grand Total (1st unit)</strong></td><td><strong>$1,345&ndash;1,380</strong></td></tr>
+  <tr><td><em>2nd unit (mold reuse)</em></td><td><em>~$975</em></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     10. BUILD PHASES
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<h2>10. Build Phases</h2>
+
+<p><strong>Estimated total: 16&ndash;23 weeks</strong></p>
+
+<div class="phase">
+  <div class="phase-num">0</div>
+  <div class="phase-content">
+    <strong>Breadboard Proof-of-Concept</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    Wire all sensors/actuators on breadboard. Validate I2C bus (no address conflicts). Test swap state machine with two joysticks. Measure end-to-end latency (target: &lt;20ms). Run full firmware stack with MQTT publish/subscribe.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">1</div>
+  <div class="phase-content">
+    <strong>Custom PCB Design</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    KiCad schematic &amp; layout: Pi header, I2C/SPI buses, JST-XH connectors for each ribbon cable, screw terminals for power, test points. Fabricate at JLCPCB (2-layer), assemble and validate.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">2</div>
+  <div class="phase-content">
+    <strong>3D Printed Armrest Mockup</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    1:1 scale armrest with joystick cavity, button holes, electronics bay. Install real hardware, test ergonomics with two people. Model and print center console dashboard. Iterate at least once.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">3</div>
+  <div class="phase-content">
+    <strong>Fiberglass Shell</strong> <span class="duration">(4&ndash;6 weeks)</span><br>
+    Build foam/MDF plug from CAD. Fair and finish to 400 grit. Lay up female mold, then production shell. Bond in cable channels and electronics bay walls. Sand, prime, paint white.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">4</div>
+  <div class="phase-content">
+    <strong>Pedestal Base</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    Cut and weld steel tube + base plate. Mount swivel bearing. Install Pi + PCB enclosure. Load test at 200 kg. Powder coat matte black.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">5</div>
+  <div class="phase-content">
+    <strong>Upholstery &amp; Assembly</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    Cut foam, glue to shell, sew/install fabric. Mount all electronics, speakers, LEDs into shell. Route ribbon cables, connect everything. Mount shell to pedestal. Power-on test.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">6</div>
+  <div class="phase-content">
+    <strong>Software Integration &amp; Tuning</strong> <span class="duration">(2&ndash;3 weeks)</span><br>
+    Flash DietPi + cybersyn service. Calibrate joysticks. Configure lighting scenes and music library. Implement all 10 easter eggs. Set up Home Assistant. 8-hour soak test.
+  </div>
+</div>
+<div class="phase">
+  <div class="phase-num">7</div>
+  <div class="phase-content">
+    <strong>Multi-Couch Network</strong> <span class="duration">(future)</span><br>
+    Couch-to-couch MQTT coordination. Voting/polling across units. Central display wall. Full 7-couch Opsroom mode.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     11. MANUFACTURING
+     ═══════════════════════════════════════════════════════════════════ -->
+<h2>11. Manufacturing</h2>
+
+<h3>Shell Manufacturing Decision Matrix</h3>
+<table>
+  <tr><th>Factor</th><th>Fiberglass Hand Lay-Up</th><th>Rotomolding</th><th>CNC Foam + Infusion</th></tr>
+  <tr><td>Best for qty</td><td>1&ndash;6 units</td><td>7+ units</td><td>1 unit (art piece)</td></tr>
+  <tr><td>Surface quality</td><td>Excellent (gel coat)</td><td>Good (grainy)</td><td>Excellent</td></tr>
+  <tr><td>Shell weight</td><td>8&ndash;12 kg</td><td>15&ndash;20 kg</td><td>6&ndash;10 kg</td></tr>
+  <tr><td>Tooling cost</td><td>$1,500&ndash;3,000</td><td>$5,000&ndash;10,000</td><td>$500 (CNC time)</td></tr>
+  <tr><td>Per-unit cost</td><td>$300&ndash;500</td><td>$80&ndash;150</td><td>$400&ndash;600</td></tr>
+  <tr><td>Cable channels</td><td>Bond in after</td><td>Mold in</td><td>Mold in</td></tr>
+  <tr><td>Skill level</td><td>Intermediate</td><td>Professional</td><td>Advanced</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Recommendation:</strong> Fiberglass hand lay-up for the first couch. Commission a rotomold if demand reaches 7+ units.
+</div>
+
+<h3>3D Printed Components (PETG/ABS)</h3>
+<table>
+  <tr><th>Part</th><th>Material</th><th>Print Time</th></tr>
+  <tr><td>Joystick mount plate (&times;2)</td><td>PETG</td><td>3h each</td></tr>
+  <tr><td>Button panel frame (&times;2)</td><td>PETG</td><td>4h each</td></tr>
+  <tr><td>Dashboard panel frame</td><td>ABS</td><td>5h</td></tr>
+  <tr><td>OLED bezel (&times;1&ndash;3)</td><td>PETG</td><td>1h each</td></tr>
+  <tr><td>Electronics bay lid (&times;2)</td><td>PETG</td><td>2h each</td></tr>
+  <tr><td>Speaker grille, NFC mount, cable clips</td><td>PLA/PETG</td><td>3.5h total</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     12. SAFETY & POWER
+     ═══════════════════════════════════════════════════════════════════ -->
+<h2>12. Safety &amp; Power</h2>
+
+<div class="two-col">
+<div>
+<h3>Electrical Safety</h3>
+<table>
+  <tr><th>Concern</th><th>Mitigation</th></tr>
+  <tr><td>Fire risk</td><td>22 AWG silicone wire (200&deg;C), 5A fuse on main</td></tr>
+  <tr><td>Shock risk</td><td>All 5V/3.3V DC &mdash; no mains inside couch</td></tr>
+  <tr><td>Short circuit</td><td>Polyfuse (resettable) per arm power feed</td></tr>
+  <tr><td>Heat</td><td>Ventilated cavity, passive heatsink, thermal shutdown 80&deg;C</td></tr>
+  <tr><td>Pinch points</td><td>All electronics sealed behind panels</td></tr>
+</table>
+</div>
+<div>
+<h3>Structural Safety</h3>
+<table>
+  <tr><th>Concern</th><th>Mitigation</th></tr>
+  <tr><td>Tip-over</td><td>Weighted steel base plate, CoG analysis</td></tr>
+  <tr><td>Load rating</td><td>200 kg (440 lbs) &mdash; 2 adults + safety</td></tr>
+  <tr><td>Swivel lock</td><td>Optional friction lock on bearing</td></tr>
+  <tr><td>Off-gassing</td><td>Low-VOC epoxy, 7-day full cure</td></tr>
+</table>
+</div>
+</div>
+
+<h3>Power Budget</h3>
+<table>
+  <tr><th>Subsystem</th><th>Typical</th><th>Peak</th></tr>
+  <tr><td>Raspberry Pi 4B</td><td>3.0W</td><td>6.0W</td></tr>
+  <tr><td>Sensors, expanders, displays</td><td>0.5W</td><td>0.9W</td></tr>
+  <tr><td>WS2812B LEDs (125 @ 30% avg)</td><td>7.5W</td><td>37.5W</td></tr>
+  <tr><td>Haptic motors (&times;3, pulsed)</td><td>0.1W</td><td>3.0W</td></tr>
+  <tr><td>Speakers (2&times; 5W)</td><td>2.0W</td><td>10.0W</td></tr>
+  <tr style="background:#fff5e8"><td><strong>Total</strong></td><td><strong>~13W</strong></td><td><strong>~57W</strong></td></tr>
+</table>
+<p>45W USB-C PD for typical use. 12V/5A (60W) supply with buck converters for full party-mode peak.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BACK PAGE
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="section-break"></div>
+<div style="text-align:center; padding-top: 60mm;">
+  <h2 style="border:none; color:#ff9329; font-size: 24pt; letter-spacing: 3px;">CYBERSYN COUCH</h2>
+  <p style="color:#888; font-size: 11pt; letter-spacing: 2px; text-transform: uppercase;">Open Hardware &bull; Open Software &bull; Open Future</p>
+  <br><br>
+  <p style="color:#aaa; font-size: 10pt;">
+    Repository: <strong>gitea.jeffemmett.com/jeff/cybersyn-chair</strong><br><br>
+    Hardware: CERN Open Hardware License v2<br>
+    Software: MIT License<br>
+    Documentation: CC BY-SA 4.0<br><br>
+    Version 0.1 &mdash; March 2026
+  </p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersyn Couch — Prototype Edition</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #ddd; font-family: 'Courier New', monospace; }
+
+  .slide {
+    min-height: 100vh;
+    padding: 8vh 8vw;
+    border-bottom: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  img {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 8px;
+    display: block;
+    margin: 1.5em 0;
+  }
+
+  h1 { font-size: 3.5rem; color: #4af; font-weight: 700; text-transform: uppercase; margin-bottom: 0.3em; }
+  h2 { font-size: 2rem; color: #4af; font-weight: 700; margin-bottom: 0.5em; }
+  h3 { font-size: 1.1rem; color: #4af; margin: 0.8em 0 0.3em; }
+  p { font-size: 1rem; color: #aaa; line-height: 1.7; margin-bottom: 0.5em; max-width: 700px; }
+  .sub { font-size: 0.9rem; color: #666; letter-spacing: 0.2em; text-transform: uppercase; }
+  .blue { color: #4af; }
+  .red { color: #f44; }
+  .green { color: #4a4; }
+
+  .specs { margin: 1em 0; max-width: 600px; }
+  .specs div { display: flex; gap: 1.5em; padding: 0.3em 0; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; }
+  .specs .k { font-weight: 700; min-width: 8em; }
+
+  .modes { display: flex; flex-wrap: wrap; gap: 1em; margin: 1em 0; }
+  .mode { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 1.2em; text-align: center; min-width: 140px; flex: 1; }
+  .mode h3 { margin: 0.3em 0 0.2em; }
+  .mode p { font-size: 0.8rem; margin: 0 auto; }
+  .mode .hint { font-size: 0.7rem; color: #555; margin-top: 0.3em; font-style: italic; }
+
+  .badge { display: inline-block; padding: 0.2em 0.7em; border-radius: 1em; font-size: 0.8rem; font-weight: 700; margin: 0.15em; }
+  .ba { background: #4af; color: #000; }
+  .bb { background: #f44; color: #fff; }
+  .bg { background: #4a4; color: #fff; }
+  .bp { background: #a4f; color: #fff; }
+
+  table { border-collapse: collapse; font-size: 0.85rem; margin: 1em 0; max-width: 700px; }
+  th { background: #222; color: #4af; text-align: left; padding: 0.5em 0.8em; font-size: 0.7rem; text-transform: uppercase; }
+  td { padding: 0.35em 0.8em; border-bottom: 1px solid #1a1a1a; }
+
+  .cols { display: flex; gap: 4em; flex-wrap: wrap; }
+  .cols > div { flex: 1; min-width: 280px; }
+
+  .big { font-size: 4rem; font-weight: 700; color: #4af; }
+  .strike { text-decoration: line-through; color: #555; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide">
+  <h1>Cybersyn Couch</h1>
+  <div class="sub">Prototype Edition &bull; $47 Budget &bull; It Actually Works</div>
+  <img src="img/cybersyn-jank-hero.jpg">
+  <p>Same cybernetic principles. Different budget.</p>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide">
+  <h2>The Vision vs. The Reality</h2>
+  <div class="cols">
+    <div>
+      <h3>The Spec</h3>
+      <p class="blue" style="line-height:2;">
+        &gt; Dual hall-effect joysticks<br>
+        &gt; Fiberglass monocoque shell<br>
+        &gt; NFC user profiles<br>
+        &gt; 125 addressable RGB LEDs<br>
+        &gt; Custom PCB with I2C mux<br>
+        &gt; $1,350 estimated cost
+      </p>
+    </div>
+    <div>
+      <h3>What We Built</h3>
+      <p class="red" style="line-height:2;">
+        &gt; Xbox controllers + duct tape<br>
+        &gt; Thrift store couch ($15)<br>
+        &gt; Sharpie labels on cardboard<br>
+        &gt; One LED strip from Amazon<br>
+        &gt; Breadboard + jumper wires<br>
+        &gt; $47 total (including pizza)
+      </p>
+    </div>
+  </div>
+  <p style="margin-top:2em; color:#555; font-style:italic;">"The same cybernetic principles apply at any budget."</p>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide">
+  <h2>Joystick "System"</h2>
+  <img src="img/cybersyn-jank-armrest.jpg">
+  <p>Game controller duct-taped to armrest. Breadboard underneath. It works. Don't touch the red wire.</p>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide">
+  <h2>Center Console</h2>
+  <img src="img/cybersyn-jank-dashboard.jpg">
+  <p>Cardboard + arcade buttons + sharpie labels. OLED shows "SWAP" in green. The NFC reader is hot-glued on. It reads cards though.</p>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide">
+  <h2>Still 5 Control Modes</h2>
+  <p style="color:#555;">The software doesn't care what the hardware looks like</p>
+  <div class="modes">
+    <div class="mode"><span class="badge ba">1</span><h3>Independent</h3><p>Left &rarr; left<br>Right &rarr; right</p><div class="hint">works great</div></div>
+    <div class="mode"><span class="badge ba">2</span><h3>Swapped</h3><p>Left &rarr; right<br>Right &rarr; left</p><div class="hint">surprisingly fun</div></div>
+    <div class="mode"><span class="badge ba">3</span><h3>Merged</h3><p>Left = X<br>Right = Y</p><div class="hint">requires teamwork</div></div>
+    <div class="mode"><span class="badge ba">4</span><h3>Pilot / Co-pilot</h3><p>One drives<br>Other overrides</p><div class="hint">causes arguments</div></div>
+    <div class="mode"><span class="badge ba">5</span><h3>Custom</h3><p>YAML config<br>if you can find it</p><div class="hint">nobody changed this</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide">
+  <h2>Bill of Materials</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Item</th><th>Source</th><th>Cost</th></tr>
+        <tr><td>Couch</td><td>Goodwill</td><td>$15</td></tr>
+        <tr><td>4x caster wheels</td><td>Home Depot clearance</td><td>$8</td></tr>
+        <tr><td>Raspberry Pi 3B</td><td>Roommate's drawer</td><td>$0</td></tr>
+        <tr><td>2x USB controllers</td><td>Already owned</td><td>$0</td></tr>
+        <tr><td>LED strip (2m)</td><td>Amazon</td><td>$7</td></tr>
+        <tr><td>Arcade buttons (x6)</td><td>AliExpress</td><td>$4</td></tr>
+        <tr><td>OLED display</td><td>AliExpress</td><td>$3</td></tr>
+        <tr><td>Breadboard + wires</td><td>Lab supply closet</td><td style="color:#555;">$0*</td></tr>
+        <tr><td>Duct tape</td><td>Dollar store</td><td>$1</td></tr>
+        <tr><td>Cardboard</td><td>Amazon box</td><td>$0</td></tr>
+        <tr><td>Pizza (motivation)</td><td>Dominos</td><td>$9</td></tr>
+        <tr><td colspan="2" style="color:#4af; font-weight:700;">Total</td><td style="color:#4af; font-weight:700;">$47</td></tr>
+      </table>
+      <p style="font-size:0.75rem; color:#555;">*we'll return it</p>
+    </div>
+    <div style="text-align:center; padding-top:2em;">
+      <div class="big">$47</div>
+      <p style="text-align:center;">total build cost</p>
+      <div style="margin-top:1.5em; font-size:2rem; font-weight:700;"><span class="strike">$1,350</span></div>
+      <p style="text-align:center;">we saved 96.5%</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide">
+  <h2>The Build Team</h2>
+  <img src="img/cybersyn-jank-team.jpg">
+  <p>4 people, 1 weekend, 1 garage, 0 prior furniture-building experience. The LED strip fell off twice.</p>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="slide">
+  <h2>What Actually Works</h2>
+  <div class="cols">
+    <div>
+      <h3 class="green">&#10003; Working</h3>
+      <div class="specs">
+        <div><span class="k green">Joysticks</span><span class="v">Both controllers read input via USB &mdash; no soldering needed</span></div>
+        <div><span class="k green">Swap modes</span><span class="v">All 5 modes work in software &mdash; SWAP button triggers handshake</span></div>
+        <div><span class="k green">OLED display</span><span class="v">Shows current mode, I2C to Pi, runs great</span></div>
+        <div><span class="k green">LED strip</span><span class="v">Party mode is genuinely impressive in a dark room</span></div>
+        <div><span class="k green">MQTT</span><span class="v">Home Assistant picks up all events, automations work</span></div>
+        <div><span class="k green">Wheels</span><span class="v">Couch rolls. Maybe too well on hardwood</span></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="red">&#10007; Known Issues</h3>
+      <div class="specs">
+        <div><span class="k red">Duct tape</span><span class="v">Controllers detach if you pull too hard</span></div>
+        <div><span class="k red">Cardboard</span><span class="v">Dashboard gets soggy if you spill anything</span></div>
+        <div><span class="k red">Wheels</span><span class="v">No brakes. Couch drifts during party mode</span></div>
+        <div><span class="k red">Wiring</span><span class="v">Exposed breadboard catches on cushions</span></div>
+        <div><span class="k red">NFC</span><span class="v">Works but you have to hold the card at exactly the right angle</span></div>
+        <div><span class="k red">Audio</span><span class="v">Bluetooth speaker duct-taped to back keeps disconnecting</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide">
+  <h2>Easter Eggs (All 10 Work)</h2>
+  <div style="margin:1em 0;">
+    <span class="badge ba">Party Mode</span>
+    <span class="badge bb">Deep Space</span>
+    <span class="badge bg">Konami Code</span>
+    <span class="badge bb">Algedonic Alert</span>
+    <span class="badge bp">Secret DJ</span>
+    <span class="badge ba">Cybersyn Boot</span>
+    <span class="badge bg">Random Wisdom</span>
+    <span class="badge bp">Mood Sync</span>
+    <span class="badge bb">Chilean Flag</span>
+    <span class="badge bg">Ghost in Machine</span>
+  </div>
+  <p style="line-height:2;">
+    Party Mode triggers LED rainbow chase + phone speaker plays music at max volume.<br>
+    Konami Code actually works if you do it on the Xbox controller d-pad.<br>
+    Algedonic Alert is both FN4 buttons at once &mdash; the whole couch vibrates (phone taped under cushion).<br>
+    Ghost in Machine activates after 30 min unoccupied &mdash; roommates thought the couch was haunted.
+  </p>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="slide" style="text-align:center; justify-content:center; min-height:60vh;">
+  <h1>$47 Couch.<br>Same Software.</h1>
+  <div class="sub">Proof of concept &bull; All 5 modes &bull; All 10 easter eggs</div>
+  <p style="margin:2em auto 0; color:#555; font-style:italic;">"The purpose of a system is what it does." &mdash; Stafford Beer</p>
+</div>
+
+</body>
+</html>

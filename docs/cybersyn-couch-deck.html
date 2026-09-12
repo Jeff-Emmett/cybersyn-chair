@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersyn Couch</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0806; color: #e8e0d4; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+  .slide {
+    min-height: 100vh;
+    padding: 8vh 8vw;
+    border-bottom: 1px solid #1a1208;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  img {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 8px;
+    display: block;
+    margin: 1.5em 0;
+  }
+
+  h1 { font-size: 3.5rem; color: #ff9329; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3em; }
+  h2 { font-size: 2rem; color: #ff9329; font-weight: 700; margin-bottom: 0.5em; }
+  h3 { font-size: 1.1rem; color: #e09030; margin: 0.8em 0 0.3em; }
+  p { font-size: 1rem; color: #cca060; line-height: 1.7; margin-bottom: 0.5em; max-width: 700px; }
+  .sub { font-size: 0.9rem; color: #887755; letter-spacing: 0.2em; text-transform: uppercase; }
+  .dim { color: #665544; }
+
+  .specs { margin: 1em 0; max-width: 600px; }
+  .specs div { display: flex; gap: 1.5em; padding: 0.3em 0; border-bottom: 1px solid #1a1208; font-size: 0.9rem; }
+  .specs .k { color: #ff9329; font-weight: 600; min-width: 7em; }
+  .specs .v { color: #bba88a; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 1em; margin: 1.5em 0; }
+  .stat { text-align: center; background: rgba(255,147,41,0.06); border: 1px solid rgba(255,147,41,0.15); border-radius: 6px; padding: 1.2em 2em; }
+  .stat .n { font-size: 2.5rem; font-weight: 800; color: #ff9329; }
+  .stat .u { font-size: 0.8rem; color: #cc8040; }
+  .stat .d { font-size: 0.7rem; color: #887755; }
+
+  .modes { display: flex; flex-wrap: wrap; gap: 1em; margin: 1em 0; }
+  .mode { background: rgba(255,147,41,0.06); border: 1px solid rgba(255,147,41,0.15); border-radius: 6px; padding: 1.2em; text-align: center; min-width: 150px; flex: 1; }
+  .mode h3 { margin: 0.3em 0 0.2em; }
+  .mode p { font-size: 0.8rem; margin: 0 auto; }
+  .mode .hint { font-size: 0.7rem; color: #887755; margin-top: 0.3em; }
+
+  .badge { display: inline-block; padding: 0.2em 0.7em; border-radius: 1em; font-size: 0.8rem; font-weight: 700; margin: 0.15em; }
+  .ba { background: #ff9329; color: #0a0806; }
+  .bb { background: #4488ff; color: #fff; }
+  .bg { background: #22aa44; color: #fff; }
+  .br { background: #dd3333; color: #fff; }
+  .bp { background: #8844cc; color: #fff; }
+
+  table { border-collapse: collapse; font-size: 0.85rem; margin: 1em 0; max-width: 700px; }
+  th { background: rgba(74,40,0,0.5); color: #ffcc88; text-align: left; padding: 0.5em 0.8em; font-size: 0.7rem; text-transform: uppercase; }
+  td { padding: 0.35em 0.8em; border-bottom: 1px solid #1a1208; }
+
+  .cols { display: flex; gap: 4em; flex-wrap: wrap; }
+  .cols > div { flex: 1; min-width: 280px; }
+
+  pre { background: #0d0a04; color: #ffaa44; padding: 1.2em; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.8rem; line-height: 1.4; border: 1px solid #1a1208; overflow-x: auto; margin: 1em 0; max-width: 600px; }
+
+  .big { font-size: 4rem; font-weight: 800; color: #ff9329; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<div class="slide">
+  <h1>Cybersyn Couch</h1>
+  <div class="sub">Dual-Joystick &bull; Mobile &bull; Open Hardware</div>
+  <img src="img/cybersyn-hero-hd.jpg">
+  <p>Two-seater cybernetic couch on wheels. Inspired by Chile's 1971 Operations Room. Every button does something.</p>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide">
+  <h2>Dual Joystick Control</h2>
+  <img src="img/cybersyn-armrest-hd.jpg">
+  <p>Each armrest: hall-effect 2-axis joystick + 4 Cherry MX buttons. 50Hz polling, 16-bit ADC, haptic feedback per arm.</p>
+  <div class="specs">
+    <div><span class="k">Joystick</span><span class="v">Hall-effect, +/-25 deg, spring-return</span></div>
+    <div><span class="k">Shaft</span><span class="v">120mm anodized aluminum, orange grip</span></div>
+    <div><span class="k">Buttons</span><span class="v">4x Cherry MX per arm (light, scene, music, FN)</span></div>
+    <div><span class="k">Polling</span><span class="v">50 Hz, 16-bit ADC, 8% deadzone</span></div>
+    <div><span class="k">Feedback</span><span class="v">Haptic motor + LED ring per armrest</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide">
+  <h2>Center Console</h2>
+  <img src="img/cybersyn-dashboard-hd.jpg">
+  <p>OLED display, SWAP button with cooperative handshake, NFC profile reader, rotary encoders, and 4 easter egg keys.</p>
+  <div class="specs">
+    <div><span class="k">Display</span><span class="v">1.3" OLED 128x64 &mdash; mode, track, status</span></div>
+    <div><span class="k">Row 1</span><span class="v">LIGHTS &bull; VOLUME &bull; MUSIC &bull; POWER</span></div>
+    <div><span class="k">Row 2</span><span class="v">SWAP &bull; NFC reader &bull; MODE SELECT</span></div>
+    <div><span class="k">Row 3</span><span class="v">RANDOM &bull; PARTY &bull; AMBIENT &bull; SECRET</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide">
+  <h2>5 Control Modes</h2>
+  <p class="dim">Press SWAP to propose &bull; Partner confirms or force-swap &bull; 3-second timeout</p>
+  <div class="modes">
+    <div class="mode"><span class="badge ba">1</span><h3>Independent</h3><p>Left &rarr; left<br>Right &rarr; right</p><div class="hint">Default mode</div></div>
+    <div class="mode"><span class="badge bb">2</span><h3>Swapped</h3><p>Left &rarr; right<br>Right &rarr; left</p><div class="hint">Cross-control</div></div>
+    <div class="mode"><span class="badge bg">3</span><h3>Merged</h3><p>Left = X axis<br>Right = Y axis</p><div class="hint">Cooperative 2D</div></div>
+    <div class="mode"><span class="badge br">4</span><h3>Pilot / Co-pilot</h3><p>Pilot drives<br>Override &gt;80%</p><div class="hint">Asymmetric</div></div>
+    <div class="mode"><span class="badge bp">5</span><h3>Custom</h3><p>User-defined<br>YAML config</p><div class="hint">Programmable</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="slide">
+  <h2>I/O At a Glance</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">4</div><div class="u">analog axes</div><div class="d">2 per joystick</div></div>
+    <div class="stat"><div class="n">20</div><div class="u">buttons</div><div class="d">FN + dashboard + push + rotary</div></div>
+    <div class="stat"><div class="n">125</div><div class="u">RGB LEDs</div><div class="d">WS2812B, 4 zones</div></div>
+    <div class="stat"><div class="n">3</div><div class="u">haptic motors</div><div class="d">DRV2605L per zone</div></div>
+    <div class="stat"><div class="n">1-3</div><div class="u">OLED displays</div><div class="d">128x64 green-on-black</div></div>
+    <div class="stat"><div class="n">1</div><div class="u">NFC reader</div><div class="d">RC522 profile cards</div></div>
+    <div class="stat"><div class="n">2</div><div class="u">speakers</div><div class="d">5W stereo, USB DAC</div></div>
+    <div class="stat"><div class="n">4</div><div class="u">wheels</div><div class="d">Locking casters, 200kg</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="slide">
+  <h2>Electronics</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Component</th><th>Part</th><th>Bus</th></tr>
+        <tr><td><strong>Brain</strong></td><td>Raspberry Pi 4B/5</td><td>Host</td></tr>
+        <tr><td><strong>ADC</strong></td><td>ADS1115 16-bit</td><td>I2C 0x48</td></tr>
+        <tr><td><strong>I/O x2</strong></td><td>MCP23017</td><td>I2C 0x20-21</td></tr>
+        <tr><td><strong>I2C Mux</strong></td><td>TCA9548A</td><td>I2C 0x70</td></tr>
+        <tr><td><strong>Haptic x3</strong></td><td>DRV2605L + LRA</td><td>I2C (mux)</td></tr>
+        <tr><td><strong>Display</strong></td><td>SH1106 OLED</td><td>I2C 0x3C</td></tr>
+        <tr><td><strong>NFC</strong></td><td>RC522</td><td>SPI</td></tr>
+        <tr><td><strong>LEDs</strong></td><td>WS2812B x125</td><td>GPIO</td></tr>
+        <tr><td><strong>Audio</strong></td><td>USB DAC + 2x5W</td><td>USB</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="specs">
+        <div><span class="k">Runtime</span><span class="v">Python 3.11 asyncio</span></div>
+        <div><span class="k">Messaging</span><span class="v">MQTT event bus</span></div>
+        <div><span class="k">Integration</span><span class="v">Home Assistant</span></div>
+        <div><span class="k">Profiles</span><span class="v">NFC card &rarr; YAML config</span></div>
+        <div><span class="k">Power</span><span class="v">45W typical / 60W peak</span></div>
+        <div><span class="k">Safety</span><span class="v">All 5V/3.3V DC, polyfuse per arm</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="slide">
+  <h2>10 Easter Eggs</h2>
+  <img src="img/cybersyn-lifestyle-hd.jpg">
+  <div style="margin-top:0.5em;">
+    <span class="badge ba">Party Mode</span>
+    <span class="badge bb">Deep Space</span>
+    <span class="badge bg">Konami Code</span>
+    <span class="badge br">Algedonic Alert</span>
+    <span class="badge bp">Secret DJ</span>
+    <span class="badge ba">Cybersyn Boot</span>
+    <span class="badge bb">Random Wisdom</span>
+    <span class="badge bg">Mood Sync</span>
+    <span class="badge br">Chilean Flag</span>
+    <span class="badge bp">Ghost in Machine</span>
+  </div>
+  <p style="margin-top:1em;">Custom easter eggs definable via YAML &mdash; button sequences, LED patterns, audio, haptic, display text.</p>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="slide">
+  <h2>Build Plan &amp; Cost</h2>
+  <div class="cols">
+    <div>
+      <table>
+        <tr><th>Phase</th><th>What</th><th>Time</th></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">0</span></td><td>Breadboard PoC &mdash; sensors, I2C, swap test</td><td>2-3 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">1</span></td><td>Custom PCB &mdash; KiCad, JLCPCB fab</td><td>2-3 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">2</span></td><td>3D printed armrest mockup</td><td>2-3 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">3</span></td><td>Fiberglass shell &mdash; plug, mold, layup</td><td>4-6 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">4</span></td><td>Wheel base &mdash; steel, 4x locking casters</td><td>1-2 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">5</span></td><td>Upholstery + assembly</td><td>2-3 wk</td></tr>
+        <tr><td><span class="badge ba" style="font-size:0.65rem;">6</span></td><td>Software &mdash; calibration, scenes, eggs</td><td>2-3 wk</td></tr>
+      </table>
+    </div>
+    <div style="text-align:center; padding-top:1em;">
+      <div class="big">$1,350</div>
+      <p style="text-align:center;">first unit estimate</p>
+      <div style="margin-top:1em; font-size:2rem; font-weight:800; color:#ff9329;">~$975</div>
+      <p style="text-align:center;">per unit at 2+ (mold reuse)</p>
+      <div style="margin-top:1em; font-size:2rem; font-weight:800; color:#ff9329;">15-21 weeks</div>
+      <p style="text-align:center;">to first couch</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="slide">
+  <h2>Physical Specifications</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">1800mm</div><div class="u">overall width</div></div>
+    <div class="stat"><div class="n">850mm</div><div class="u">backrest height</div></div>
+    <div class="stat"><div class="n">45-55kg</div><div class="u">total weight</div></div>
+    <div class="stat"><div class="n">200kg</div><div class="u">load rating</div></div>
+  </div>
+  <div class="specs" style="margin-top:1.5em;">
+    <div><span class="k">Shell</span><span class="v">White fiberglass monocoque, compound curves</span></div>
+    <div><span class="k">Upholstery</span><span class="v">Burnt orange leather (Pantone 1665 C)</span></div>
+    <div><span class="k">Base</span><span class="v">Steel frame + 4x 75mm locking caster wheels</span></div>
+    <div><span class="k">Armrests</span><span class="v">200mm wide, recessed joystick + 4 buttons each</span></div>
+    <div><span class="k">Console</span><span class="v">250mm center with OLED, NFC, 15 controls</span></div>
+    <div><span class="k">Licenses</span><span class="v">CERN-OHL-S-2.0 / MIT / CC BY-SA 4.0</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="slide" style="text-align:center; justify-content:center; min-height:60vh;">
+  <h1>Cybersyn Couch</h1>
+  <div class="sub">Open Hardware &bull; Open Software &bull; Open Future</div>
+  <p style="margin:2em auto 0; color:#665544;">v0.1 &mdash; March 2026</p>
+</div>
+
+</body>
+</html>
